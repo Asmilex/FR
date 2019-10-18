@@ -1,10 +1,11 @@
-# Introducción al netcoding
+# <p align="center"> Introducción al netcoding </p>
 
-> Por Andrés Millán Muñoz y Ricardo Ruiz
+*<p align="center"> Por Andrés Millán Muñoz y Ricardo Ruiz </p>*
 
 En este documento, investigaremos el funcionamiento de un servidor de un juego online. Analizaremos el netcode de un juego online PvP (Player versus Player): qué tipo de conectividad se ofrece, cómo se gestiona la latencia y la pérdida de paquetes, interpolación de cliente/servidor...
-Para ello, usaremos el juego **Overwatch** como ejemplo.
+Todos estos conceptos los ilustraremos mediante **Overwatch**
 
+> *Gestionar una partida implica gestionar personas viviendo en instantes de tiempo distintos. Únicamente puedes saber dónde está su sombra del pasado.*
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=6 orderedList=false} -->
 
@@ -16,8 +17,10 @@ Para ello, usaremos el juego **Overwatch** como ejemplo.
     - [Client Hosted](#client-hosted)
 - [Algunos conceptos básicos](#algunos-conceptos-básicos)
 - [Overwatch](#overwatch)
+  - [Hitscan y proyectiles](#hitscan-y-proyectiles)
   - [Latencia](#latencia)
-    - [Favour the shooter](#favour-the-shooter)
+  - [Pérdida de paquetes](#pérdida-de-paquetes)
+  - [Favour the shooter](#favour-the-shooter)
     - [Interpolación del retardo](#interpolación-del-retardo)
     - [Adaptive delay interpolation](#adaptive-delay-interpolation)
     - [Extrapolación](#extrapolación)
@@ -96,28 +99,61 @@ Estos datos acumulados podrían reflejarse en los clientes como una recepción m
 ## Overwatch
 
 <p align="center">
-    <img width="200"src="./img/Overwatch_circle_logo.svg">
+    <img width="200" src="./img/Overwatch_circle_logo.svg">
 </p>
+
+**Overwatch** es un juego multijugador online, en el que dos equipos de 6 personas luchan por la victoria en una partida. Es un juego enfocado al competitivo, por lo que un netcode optimiado será esencial en su fucnionamiento. Desglosaremos algunas de las ténicas que el equipo de desarrollo usó para lograrlo.
+
+### Hitscan y proyectiles
+
+Existen dos tipos de daño en este juego, que serán relevantes a la hora de su estudio: hitscan y basado en proyectiles
+
+**Hitscan**
+: Este tipo de daño se calcula client-side. Si el jugador pulsa el botón de disparo mientras mantiene la cruceta en una entidad capaz de recibir disparos, el cliente enviará la señal del daño. No es necesario que se consulte al server, a excepción de reconfirmar que ha impactado
+
+**Basado en proyectiles**
+: El cliente envía la señal de que un determinado proyectil se ha lanzado. Tras esto, la distancia de viajado, daño, impacto, y todos los cálculos necesarios se realizan en la simulación del servidor.
 
 ### Latencia
 
-
-Es muy importante mantener una latencia baja a la hora de crear una buena experiencia de usuario. A partir de ciertos milisegundos de retraso, el juego puede volverse poco fluido, y tardar en responder, lo cual afecta al usuario en gran medida.
+La latencia es el principal enemigo de un juego en línea. Es muy importante mantener una latencia baja, con el fin de crear una buena experiencia de usuario. A partir de ciertos milisegundos de retraso, el juego puede volverse poco fluido y tardar en responder, lo cual afecta al usuario en gran medida.
 
 <!---
 TODO Vídeo sobre alto ping
 -->
 
-Además, debemos tener en cuenta la distancia entre los clientes. Si un jugador P1 se encuentra en España, y P2 en Estados Unidos, obligatoriamente tendrán un ping mayor que dos personas que se encuentren en España. Para solventar esto, se centralizan los servidores por regiones. Usualmente: Europa, Asia y las Américas.
+Veamos algunos matices con los que tendremos que lidiar:
 
-Aún así, no es posible garantizar que todos los usuarios de una región tengan acceso a una conexión estable. No podemos controlar el hardware ni la estabilidad de la red. Por ello, se utilizan diferentes técnicas para mitigar la diferencia de ping.
+Como problema primodiral, tenemos **la latencia entre cliente y servidor**. No es posible garantizar que todos los usuarios tengan acceso a una conexión estable. No podemos controlar el hardware ni la estabilidad de la red.
 
-Debido a la inmensa relevancia que tiene en un juego competitivo online, nos centraremos en las técnicas que utilizan. Aunque nos centraremos en Overwatch, veremos también otras implementaciones de otros juegos.
+Aparte, debemos tener en cuenta la **distancia entre los clientes**. Como ejemplo: si un jugador P1 se encuentra en España, y P2 en Estados Unidos, obligatoriamente tendrán un ping mayor que dos personas que se encuentren en España.
 
+Para solventar esto, se centralizan los servidores por regiones. Usualmente: Europa, Asia y América (muchas veces, se divide en la costa este y costa oeste, debido al tamaño del continente).
 
-Tickrate de 60Hz
+### Pérdida de paquetes
 
-#### Favour the shooter
+<!---
+TODO información, predicción de inputs, dibujo
+-->
+
+### Favour the shooter
+
+Imaginemos el siguiente escenario:
+
+Jugador P1 está intentando atacar P2.
+- P2, en su pantalla, huye detrás de una pared. Ha consegido huir
+- P1, en la suya, dispara a P1. En su pantalla ha acertado a P2.
+- En el servidor, ni P1 ha atacado, ni P2 ha huido
+
+<!---
+TODO insertar dibujo correspondiente
+-->
+
+Gestionar una partida implica gestionar personas viviendo en instantes de tiempo distintos. Únicamente puedes saber dónde está su sombra del pasado. Por tanto, el servidor debe intuir qué desenlace es el más adecuado.
+
+En el caso de Overwatch, se decidió **favorecer al atacante (Favor the shooter)**. Como en su pantalla P1 acertó al otro jugador, mandará una confirmación de disparo al servidor. Este responderá aceptando o denegando la confirmación de acierto, así como una señal de muerte al jugador P2.
+
+Esto puede producir situaciones frustrantes para la víctima, como morir ante jugadores con ping muy alto, o que sea altamente castigado si tiene una latencia considerable. En los siguientes apartados veremos cómo amenizar los efectos de favor the shooter.
 
 #### Interpolación del retardo
 

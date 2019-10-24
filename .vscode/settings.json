@@ -1,0 +1,10 @@
+{
+    "markdown.marp.themes": [
+        "https://raw.githubusercontent.com/marp-team/marp-core/master/themes/uncover.scss",
+        "https://raw.githubusercontent.com/marp-team/marp-core/master/themes/default.scss",
+        "https://raw.githubusercontent.com/marp-team/marp-core/master/themes/gaia.scss"
+    ],
+
+    "markdown.marp.chromePath": "/usr/bin/brave",
+
+}

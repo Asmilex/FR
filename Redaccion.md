@@ -73,7 +73,7 @@ TODO dibujo routing, ejemplo tracert
 **Simulación**
 : Tanto los clientes como el servidor mantiene una instancia de los eventos que ocurren en el juego. Por tanto, en cada extremo, el juego se puede ejecutar independientemente de lo que ocurra en los otros puntos. En estas instancias se pueden cargar modelos, texturas, partículas, físicas, y todo lo necesario.
 
-<!--- Esto en verdad inserra un espacio que queda genial-->
+<!--- Esto en verdad inserta un espacio que queda genial-->
 
 **Frecuencia de actualización** (upate rate)
 : Es el número de veces en las que un sistema refresca su buffer. Cuando hablamos de la simulación del servidor, se le suele llamar **tickrate**. Cuanto mayor es el tickrate, mayor es el número de veces que nuestro cliente manda y recibe información del servidor, por lo que más precisa es la concordancia cliente-servidor.

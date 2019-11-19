@@ -56,11 +56,11 @@ Es un videojuego de disparos en primera persona desarollado por *Blizzard*. Est�
 
 ---
 
-Casi todos los juegos utilizan este modelo.
+Muchos juegos utilizan este modelo.
 
 ---
 
-Casi todos los juegos utilizan este modelo.
+Muchos juegos utilizan este modelo.
 Es la forma más cómoda para que los desarrolladores tengan un ambiente controlado.
 
 ---
@@ -72,11 +72,11 @@ Es la forma más cómoda para que los desarrolladores tengan un ambiente control
 
 ---
 
-**P2P** se usa generalmente usado en **juegos de lucha**
+**P2P** se usa generalmente usado en **juegos de lucha**.
 
 ---
 
-Muy dependiente de la conexión de cada jugador
+Muy dependiente de la conexión de cada jugador.
 
 ---
 
@@ -183,4 +183,12 @@ El juego necesita ser optimizado al máximo. El competitivo es exigente y tiene 
 
 ---
 
+# El problema de la interacción jugador con jugador
+
+---
+
+¿Cómo **sincronizamos** los clientes?
+![bg right w:550](./img/Sync.jpg)
+
+---
 Estudiaremos las **técnicas** que utiliza el juego para crear una buena experiencia de juego.

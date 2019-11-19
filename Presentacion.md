@@ -18,6 +18,23 @@ paginate: true
 
 ---
 
+
+# El problema de la interacción jugador con jugador
+
+---
+
+¿Cómo **sincronizamos** los clientes?
+![bg right w:550](./img/Sync.jpg)
+
+---
+Estudiaremos las **técnicas** que utiliza el juego para crear una buena experiencia de juego.
+
+---
+
+Vídeo delay puerta.
+
+---
+
 # Overtwatch
 
 ![w:300](./img/Overwatch_circle_logo.svg)
@@ -27,6 +44,10 @@ paginate: true
 
 Es un videojuego de disparos en primera persona desarollado por *Blizzard*. Está enfocado al competitivo.
 ![bg contain](./img/Tracerfondo.jpg)
+
+---
+
+![w:1100](./video/OWLmatch.gif)
 
 ---
 
@@ -183,12 +204,73 @@ El juego necesita ser optimizado al máximo. El competitivo es exigente y tiene 
 
 ---
 
-# El problema de la interacción jugador con jugador
+Veamos las **técnicas de mitigación de latencia**
 
 ---
 
-¿Cómo **sincronizamos** los clientes?
-![bg right w:550](./img/Sync.jpg)
+Hay dos **tipos de daño** en el juego
 
 ---
-Estudiaremos las **técnicas** que utiliza el juego para crear una buena experiencia de juego.
+
+Hay dos **tipos de daño** en el juego:
+
+- **Hitscan**
+- **Proyectiles**
+
+---
+
+## Hitscan
+
+El cliente traza un rayo desde el personaje hasta el objetivo. Si se encuentra la cruceta en el modelo, envía al servidor la confirmación del daño.
+
+---
+
+![bg left w:600](./img/hitscan.jpg)
+
+El servidor debe confirmar que es correcto.
+
+---
+
+## Proyectiles
+
+El cliente envía la señal de que un determinado proyectil se ha lanzado. Tras esto, la distancia de viajado, daño, impacto, y todos los cálculos necesarios se realizan en la simulación del servidor.
+
+---
+
+![w:700](./img/Projectile.jpg)
+
+---
+
+# Favour the shooter
+
+---
+
+### Favour the shooter
+
+El servidor, en general, favorecerá al atacante que ha disparo. Esto lo podemos ver en el vídeo de antes.
+
+---
+
+Esto, sin embargo, puede ser **frustrante para la víctima**. Para ello, se mitigan sus efectos de la siguiente manera:
+
+---
+
+- **Extrapolación**: A partir de ciertos milisegundos de retardo, se deja de favorecer al atacante. Esto se hace para que no te maten jugadores con mucho ping en situaciones imposibles.
+
+- **Interpolación del delay**
+
+- **Buffer de 4 últimos comandos** de los clientes
+
+- **Mitigación del daño**
+
+---
+
+# Interpolación del delay
+
+La simulación del servidor va atrasada una update rate. Esto hace que se conozca información futura de lo que los jugadores (si es que es posible)
+
+---
+
+# Mitigación del daño
+
+Ciertas habilidades pueden anular el daño que los jugadores puedan reducir. El servidor recalculará todo lo necesario para evitar disonancias entre clientes.

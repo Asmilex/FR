@@ -4,6 +4,13 @@ theme: uncover
 paginate: true
 ---
 
+<style>
+.slide {
+  font-family: 'Times New Roman', serif !important;
+}
+</style>
+
+
 # Netcoding 101
 
 ---
@@ -27,11 +34,18 @@ paginate: true
 ![bg right w:550](./img/Sync.jpg)
 
 ---
-Estudiaremos las **técnicas** que utiliza el juego para crear una buena experiencia de juego.
+
+<style>
+  video::-webkit-media-controls {
+    will-change: transform;
+  }
+</style>
+
+<video src="./video/BF.mp4" controls width="100%"></video>
 
 ---
 
-Vídeo delay puerta.
+Estudiaremos las **técnicas** que utilizan los desarrolladores para crear una buena experiencia de juego.
 
 ---
 
@@ -150,11 +164,11 @@ Intentaremos trazar la ruta más rápida al servidor
 
 
 ### Simulación
-Es la instancia de una partida del juego. Es decir; el conjunto de personajes, lógica y físicas que se ejecuta en tu cada máquina.
+Es la instancia de una partida del juego. Es decir; el conjunto de personajes, lógica y físicas que se ejecuta tu cada máquina.
 
 ---
 
-Todos los clientes y el servidor tienen su propia simulación. Es básico para que podamos jugar.
+Tanto los cleintes como el servidor tienen su propia simulación. Es básico para que podamos jugar.
 
 ---
 
@@ -167,7 +181,7 @@ Es la frecuencia con la que el servidor y el cliente traspasan información. Cua
 
 ---
 
-En el caso de Overwatch, el tickrate es de 60Hz (16.6ms).
+En el caso de Overwatch, el tickrate es de 63Hz (15.87ms).
 
 ---
 
@@ -180,7 +194,7 @@ En el caso de Overwatch, el tickrate es de 60Hz (16.6ms).
 ---
 
 ### Pérdida de paquetes
-El traspaso de información no es perfecto. Podríamos perder inputs por el camino.
+El traspaso de información no es perfecto. Podríamos perder información por el camino.
 
 ---
 
@@ -255,7 +269,7 @@ Esto, sin embargo, puede ser **frustrante para la víctima**. Para ello, se miti
 
 ---
 
-- **Extrapolación**: A partir de ciertos milisegundos de retardo, se deja de favorecer al atacante. Esto se hace para que no te maten jugadores con mucho ping en situaciones imposibles.
+- **Extrapolación**
 
 - **Interpolación del delay**
 
@@ -265,9 +279,19 @@ Esto, sin embargo, puede ser **frustrante para la víctima**. Para ello, se miti
 
 ---
 
+# Extrapolación
+
+A partir de ciertos milisegundos de retardo, se deja de favorecer al atacante. Esto se hace para que no te maten jugadores con mucho ping en situaciones imposibles.
+
+---
+
 # Interpolación del delay
 
 La simulación del servidor va atrasada una update rate. Esto hace que se conozca información futura de lo que los jugadores (si es que es posible)
+
+---
+
+Además, los movimientos que ve el servidor no son continuos. En el proceso de cálculo se suavizan.
 
 ---
 

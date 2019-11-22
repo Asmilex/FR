@@ -285,16 +285,32 @@ A partir de ciertos milisegundos de retardo, se deja de favorecer al atacante. E
 
 ---
 
+Sin embargo, se intenta adivinar si eso podría haber funcionado en un futuro.
+
+---
+
 # Interpolación del delay
 
-La simulación del servidor va atrasada una update rate. Esto hace que se conozca información futura de lo que los jugadores (si es que es posible)
+Los movimientos que mandan los clientes son puntos discretos. Van a saltos. Lo que se hace es suavizarlos, de modo que se aprecian de forma continua.
 
 ---
 
-Además, los movimientos que ve el servidor no son continuos. En el proceso de cálculo se suavizan.
+Además, la simulación del servidor va atrasada una update rate. Esto hace que se conozca información futura de lo que los jugadores (si es que es posible), lo que facilita el suavizado
 
 ---
 
-# Mitigación del daño
+# Hit registration missprediction
 
 Ciertas habilidades pueden anular el daño que los jugadores puedan reducir. El servidor recalculará todo lo necesario para evitar disonancias entre clientes.
+
+---
+
+Esto se traduce en **no registrations**:
+
+<style>
+  video::-webkit-media-controls {
+    will-change: transform;
+  }
+</style>
+
+<video src="./video/noreg.mp4" controls width="100%"></video>
